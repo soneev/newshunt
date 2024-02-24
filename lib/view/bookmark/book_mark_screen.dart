@@ -75,7 +75,7 @@ class BookMark extends StatelessWidget {
                                 return GestureDetector(
                                   onTap: () {
                                     Get.toNamed(AppRoute.detail,
-                                        arguments: item);
+                                        arguments: item.article);
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.all(5),
