@@ -24,7 +24,6 @@ class MyApp extends StatelessWidget {
         title: 'NewsHunt',
         initialRoute: AppRoute.splash,
         getPages: appRoutes(),
-        // home: CustomCalender(),
       ),
     );
   }

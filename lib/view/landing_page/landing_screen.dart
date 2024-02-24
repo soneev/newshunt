@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newshunt/utils/colors/colors.dart';
+import 'package:newshunt/view/bookmark/book_mark_controller.dart';
+import 'package:newshunt/view/bookmark/book_mark_screen.dart';
 import 'package:newshunt/view/home/home_page.dart';
 import 'package:newshunt/view/landing_page/landing_page_controller.dart';
+import 'package:newshunt/view/search/search_screen.dart';
+import 'package:newshunt/view/setting_screen/setting_screen.dart';
+import 'package:badges/badges.dart' as badges;
 
 class LandingPage extends StatelessWidget {
   LandingPage({Key? key}) : super(key: key);
@@ -11,11 +16,11 @@ class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(LandingPageController());
+    final bkcontroller = Get.put(BookMarkController());
 
     return Scaffold(
       bottomNavigationBar: GetBuilder<LandingPageController>(
           id: "LandingScreen",
-          init: LandingPageController(),
           builder: (controller) {
             return SizedBox(
               width: 200,
@@ -41,20 +46,33 @@ class LandingPage extends StatelessWidget {
                           text: " Home",
                           icons: const Icon(
                             Icons.home,
-                            // size: 18,
                           ),
                         ),
                         buildBottomNavigationBarItem(
-                          text: " Categories",
-                          icons: const Icon(Icons.home),
+                          text: " Search",
+                          icons: const Icon(Icons.search),
                         ),
                         buildBottomNavigationBarItem(
-                            text: 'Account',
+                            text: 'Bookmark',
+                            icons: Obx(() => badges.Badge(
+                                  showBadge: bkcontroller.bookMarkList.isEmpty
+                                      ? false
+                                      : true,
+                                  badgeContent: Text(
+                                    bkcontroller.bookmarkcount.toString(),
+                                    style: const TextStyle(color: Colors.black),
+                                  ),
+                                  badgeStyle: const badges.BadgeStyle(
+                                      badgeColor: Colors.green),
+                                  child: const Icon(
+                                    Icons.bookmark_border,
+                                  ),
+                                ))),
+                        buildBottomNavigationBarItem(
+                            text: 'settings',
                             icons: const Icon(
-                              Icons.account_circle_outlined,
-                            )
-                            // CartIcons.account,
-                            ),
+                              Icons.settings,
+                            )),
                       ],
                     ),
                   ),
@@ -62,9 +80,14 @@ class LandingPage extends StatelessWidget {
               ),
             );
           }),
-      body: IndexedStack(
-          index: controller.tabIndex.value,
-          children: [HomePage(), Container(), Container()]),
+      body: Obx(
+        () => IndexedStack(index: controller.tabIndex.value, children: const [
+          HomePage(),
+          SearchScreen(),
+          BookMark(),
+          SettingScreen()
+        ]),
+      ),
     );
   }
 
@@ -72,12 +95,7 @@ class LandingPage extends StatelessWidget {
     return BottomNavigationBarItem(
       icon: Padding(
         padding: const EdgeInsets.all(5.0),
-        child: Center(child: icons
-            //  Icon(
-            //   icons,
-            //   size: 18,
-            // ),
-            ),
+        child: Center(child: icons),
       ),
       label: '$text',
     );

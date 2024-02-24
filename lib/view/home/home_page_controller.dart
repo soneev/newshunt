@@ -48,7 +48,7 @@ class HomeController extends GetxController {
         setLoader(false);
       }
     } catch (e) {
-      print('Dio Error: $e');
+      log('Dio Error: $e');
     }
     update();
   }
@@ -68,7 +68,7 @@ class HomeController extends GetxController {
         setLoader(false);
       }
     } catch (e) {
-      print('Dio Error: $e');
+      log('Dio Error: $e');
     }
     update();
   }
